@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-ruby "3.3.0"
+ruby "3.3.1"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.1.3"
@@ -9,11 +9,11 @@ gem "rails", "~> 7.1.3"
 gem "pg", "~> 1.1"
 
 # Use Mongoid as the Object-Document Mapper (ODM) for MongoDB
-gem "mongoid"
+# gem "mongoid"
 
 # Use Redis adapter to run Action Cable in production
-gem "redis", ">= 4.0.1"
-gem "redis-rails"
+# gem "redis", ">= 4.0.1"
+# gem "redis-rails"
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
