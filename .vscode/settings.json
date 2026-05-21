@@ -4,8 +4,7 @@
     "editor.defaultFormatter": "rubocop.vscode-rubocop",
     "editor.formatOnSave": true,
   },
-  "rubocop.mode": "enableViaGemfileOrMissingGemfile",
+  "rubocop.mode": "onlyRunGlobally",
   "ruby.rubocop.configFilePath": "/Users/ericstephenson/Documents/projects/ruby/coursehub-api/.rubocop.yml",
   "ruby.rubocop.executePath": "/Users/ericstephenson/.gem/ruby/3.3.1/bin/",
-  "ruby.rubocop.useBundler": true
 }
