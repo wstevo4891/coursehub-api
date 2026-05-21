@@ -82,4 +82,3 @@ group :test do
   # Use SimpleCov for test coverage reporting
   gem "simplecov", require: false
 end
-
