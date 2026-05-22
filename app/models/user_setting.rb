@@ -13,6 +13,6 @@ class UserSetting
 
   # === Instance Methods ===================================
   def user
-    User.find(self.user_id)
+    @user ||= User.find_by(id: self.user_id)
   end
 end
