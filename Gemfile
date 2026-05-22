@@ -44,6 +44,9 @@ gem "jwt"
 # Use Pundit for authorization policies
 gem "pundit"
 
+# Use Active Model Serializers to serialize model data into JSON responses
+gem "active_model_serializers"
+
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 # gem "jbuilder"
 
