@@ -14,9 +14,6 @@ gem "mongoid"
 # Use Redis adapter to run Action Cable in production
 gem "redis", ">= 4.0.1"
 
-# Provides Redis integration for Rails features (Cache, Active Job, etc.)
-gem "redis-rails"
-
 # Use hiredis connection library for better performance with Redis.
 gem "hiredis"
 
