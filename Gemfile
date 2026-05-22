@@ -5,6 +5,9 @@ ruby "3.3.1"
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.1.3"
 
+# Use the Puma web server [https://github.com/puma/puma]
+gem "puma", ">= 5.0"
+
 # Use postgresql as the database for Active Record
 gem "pg", "~> 1.1"
 
@@ -20,11 +23,11 @@ gem "hiredis"
 # Use connection_pool < 3 to avoid bug with ActiveSupport::RedisCacheStore.
 gem "connection_pool", "<3"
 
+# Background job processing
+gem "sidekiq"
+
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
-
-# Use the Puma web server [https://github.com/puma/puma]
-gem "puma", ">= 5.0"
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 gem "bcrypt", "~> 3.1.7"
