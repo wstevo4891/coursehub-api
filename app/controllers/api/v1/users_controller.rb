@@ -20,6 +20,7 @@ module Api
         @user = User.new(user_params)
 
         if @user.save
+          WelcomeEmailJob.perform_later(@user.id)
           render json: @user, status: :created
         else
           render json: { errors: @user.errors.to_hash }, status: :unprocessable_content
