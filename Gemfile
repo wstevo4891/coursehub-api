@@ -17,6 +17,9 @@ gem "redis", ">= 4.0.1"
 # Use hiredis connection library for better performance with Redis.
 gem "hiredis"
 
+# Use connection_pool < 3 to avoid bug with ActiveSupport::RedisCacheStore.
+gem "connection_pool", "<3"
+
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
 
