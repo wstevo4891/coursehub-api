@@ -3,7 +3,7 @@ class User < ApplicationRecord
   has_secure_password
 
   # === Associations =======================================
-  has_many :enrollments
+  has_many :enrollments, dependent: :destroy
   has_many :courses, through: :enrollments
   has_many :refresh_tokens, dependent: :destroy
 
@@ -28,7 +28,7 @@ class User < ApplicationRecord
     nil
   end
 
-  def user_setting=(settings)
+  def user_setting=(settings = {})
     if user_setting
       user_setting.update(**settings)
     else
