@@ -44,4 +44,10 @@ class Course < ApplicationRecord
     self.published_at = Time.now
     save
   end
+
+  def unpublish!
+    self.status = "draft"
+    self.published_at = nil
+    save
+  end
 end

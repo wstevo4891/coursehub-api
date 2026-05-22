@@ -20,6 +20,10 @@ Rails.application.routes.draw do
           post :publish
         end
 
+        member do
+          post :unpublish
+        end
+
         collection do
           get :drafts
         end
