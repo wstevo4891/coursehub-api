@@ -9,6 +9,8 @@ class Course < ApplicationRecord
   # === Scopes =============================================
   scope :drafts, -> { where(status: "draft") }
 
+  scope :published, -> { where(status: "published") }
+
   # === Instance Methods ===================================
   def publish!
     self.status = "published"
