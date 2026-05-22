@@ -89,6 +89,7 @@ GEM
     bigdecimal (4.1.2)
     bootsnap (1.24.4)
       msgpack (~> 1.2)
+    bson (5.2.0)
     builder (3.3.0)
     cgi (0.5.1)
     concurrent-ruby (1.3.6)
@@ -147,6 +148,14 @@ GEM
     minitest (6.0.6)
       drb (~> 2.0)
       prism (~> 1.5)
+    mongo (2.24.1)
+      base64
+      bson (>= 4.14.1, < 6.0.0)
+    mongoid (9.1.0)
+      activemodel (>= 5.1, < 8.2, != 7.0.0)
+      concurrent-ruby (>= 1.0.5, < 2.0)
+      mongo (>= 2.18.0, < 3.0.0)
+      ostruct
     msgpack (1.8.0)
     mutex_m (0.3.0)
     net-imap (0.6.4)
@@ -175,6 +184,7 @@ GEM
       racc (~> 1.4)
     nokogiri (1.19.3-x86_64-linux-musl)
       racc (~> 1.4)
+    ostruct (0.6.3)
     parallel (2.1.0)
     parser (3.3.11.1)
       ast (~> 2.4.1)
@@ -348,6 +358,7 @@ DEPENDENCIES
   factory_bot_rails
   faker
   jwt
+  mongoid
   pg (~> 1.1)
   puma (>= 5.0)
   pundit

@@ -9,7 +9,7 @@ gem "rails", "~> 7.1.3"
 gem "pg", "~> 1.1"
 
 # Use Mongoid as the Object-Document Mapper (ODM) for MongoDB
-# gem "mongoid"
+gem "mongoid"
 
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
