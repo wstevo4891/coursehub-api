@@ -1,13 +1,18 @@
 class Course < ApplicationRecord
+  # === Attributes =========================================
+  enum :status, %w[draft published]
+
+  # === Associations =======================================
   has_many :enrollments
   has_many :users, through: :enrollments
 
-  enum :status, %w[draft published]
-
+  # === Scopes =============================================
   scope :drafts, -> { where(status: "draft") }
 
+  # === Instance Methods ===================================
   def publish!
     self.status = "published"
+    self.published_at = Time.now
     save
   end
 end
