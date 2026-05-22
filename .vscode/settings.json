@@ -1,10 +1,10 @@
 {
   "editor.tabSize": 2,
   "[ruby]": {
-    "editor.defaultFormatter": "rubocop.vscode-rubocop",
-    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "Shopify.ruby-lsp",
+    "editor.formatOnSave": true
   },
   "rubocop.mode": "onlyRunGlobally",
   "ruby.rubocop.configFilePath": "/Users/ericstephenson/Documents/projects/ruby/coursehub-api/.rubocop.yml",
-  "ruby.rubocop.executePath": "/Users/ericstephenson/.gem/ruby/3.3.1/bin/",
+  "ruby.rubocop.executePath": "/Users/ericstephenson/.gem/ruby/3.3.1/bin/"
 }
