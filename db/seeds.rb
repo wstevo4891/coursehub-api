@@ -18,10 +18,11 @@ end
 
 puts "Created Admin User."
 
-puts "Creating 10 sample users..."
+puts "Creating 30 sample users..."
 
-10.times do
-  User.find_or_create_by(email: Faker::Internet.email) do |user|
+(2..31).each do |num|
+  User.find_or_create_by(id: num) do |user|
+    user.email = Faker::Internet.email
     user.name = Faker::Name.name
     user.password = "password"
     user.is_admin = false
@@ -30,23 +31,67 @@ end
 
 puts "Sample users are in place."
 
-puts "Creating courses..."
+puts "Clearing enrollments..."
 
-Course.find_or_create_by(title: "Rails API") do |course|
-  course.description = "Learn to build an API in Ruby on Rails."
-  course.status = "draft"
+Enrollment.delete_all
+
+puts "Clearing courses..."
+
+Course.delete_all
+
+puts "Seeding courses and enrollments..."
+
+course = Course.create(
+  title: "Rails API",
+  description: "Learn how to build a RESTful API in Ruby on Rails.",
+  status: "published",
+  published_at: 5.days.ago
+)
+
+User.offset(1).pluck(:id).sample(5).each do |user_id|
+  course.enrollments.create(user_id: user_id)
 end
 
-Course.find_or_create_by(title: "Rails with MongoDB") do |course|
-  course.description = "Learn how to build a NoSQL database in Rails with MongoDB."
-  course.status = "draft"
+course = Course.create(
+  title: "Rails with MongoDB",
+  description: "Learn how to build a NoSQL database in Rails with MongoDB.",
+  status: "published",
+  published_at: 4.days.ago
+)
+
+User.offset(1).pluck(:id).sample(5).each do |user_id|
+  course.enrollments.create(user_id: user_id)
 end
 
-Course.find_or_create_by(title: "Rails with GraphQL") do |course|
-  course.description = "Learn how to build a GraphQL API in Rails."
-  course.status = "draft"
+course = Course.create(
+  title: "Rails with GraphQL",
+  description: "Learn how to build a GraphQL API in Rails.",
+  status: "published",
+  published_at: 3.days.ago
+)
+
+User.offset(1).pluck(:id).sample(5).each do |user_id|
+  course.enrollments.create(user_id: user_id)
 end
 
-puts "Courses created."
+Course.create(
+  title: "Rails with Redis",
+  description: "Learn how to cache pages and requests in Rails using Redis.",
+  status: "draft"
+)
+
+Course.create(
+  title: "Rails with PostgreSQL",
+  description: "Learn how to build an application for data analysis with Rails and PostgreSQL.",
+  status: "draft"
+)
+
+Course.create(
+  title: "Rails with MySQL",
+  description: "Learn how to build a performant read-heavy application with Rails and MySQL.",
+  status: "draft"
+)
+
+puts "Courses and enrollments are in place."
 
 puts "Finished seeding."
