@@ -33,6 +33,11 @@ module CoursehubApi
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
 
+    # Enable sessions for Sidekiq Web Monitor
+    config.session_store :cookie_store, key: "_coursehub_api_session"
+    config.middleware.use ActionDispatch::Cookies
+    config.middleware.use config.session_store, config.session_options
+
     config.generators do |g|
       g.orm :active_record
       g.test_framework :rspec
