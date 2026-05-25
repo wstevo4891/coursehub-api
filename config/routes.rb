@@ -6,6 +6,22 @@ Rails.application.routes.draw do
   mount Rswag::Ui::Engine => "/api-docs"
   mount Rswag::Api::Engine => "/api-docs"
 
+  # Secure access to Sidekiq Web Monitor in production
+  if Rails.env.production?
+    # Insert Rack middleware to require basic auth
+    Sidekiq::Web.use Rack::Auth::Basic do |username, password|
+      # Use secure_compare to stop length information leaking.
+      # Use & instead of && so it doesn't short circuit.
+      ActiveSupport::SecurityUtils.secure_compare(
+        ::Digest::SHA256.hexdigest(username),
+        ::Digest::SHA256.hexdigest(ENV.fetch("SIDEKIQ_USERNAME", "Admin User"))
+      ) & ActiveSupport::SecurityUtils.secure_compare(
+        ::Digest::SHA256.hexdigest(password),
+        ::Digest::SHA256.hexdigest(ENV.fetch("SIDEKIQ_PASSWORD", "SecurePassword123"))
+      )
+    end
+  end
+
   mount Sidekiq::Web => "/sidekiq"
 
   namespace :api do
