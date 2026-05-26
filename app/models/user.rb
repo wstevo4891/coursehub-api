@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   # === Attributes =========================================
   has_secure_password
+  has_one_attached :avatar
 
   # === Associations =======================================
   has_many :enrollments, dependent: :destroy
