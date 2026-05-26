@@ -56,7 +56,10 @@ gem "active_model_serializers"
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin Ajax possible
 gem "rack-cors"
 
-# Set security headers
+# Use rate limiting to protect against DOS attacks and other abuse.
+gem "rack-attack"
+
+# Configure security headers
 gem "secure_headers"
 
 group :development, :test do
