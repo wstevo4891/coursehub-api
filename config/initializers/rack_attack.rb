@@ -1,3 +1,15 @@
+# Additional behavior to add:
+#
+# 1. Communicate limits with response headers:
+# - X-RateLimit-Limit
+# - X-RateLimit-Remaining
+# - X-RateLimit-Reset
+#
+# 2. If you issue API keys to clients, throttle based on the key to enforce usage quotas.
+#
+# 3. Throttle based on user ID to avoid penalizing mutliple users behind the same IP.
+# - ideal for logged-in user actions
+#
 class Rack::Attack
   cache.store = ActiveSupport::Cache.lookup_store(*Rails.application.config.cache_store)
 
@@ -37,8 +49,8 @@ class Rack::Attack
 
   # Customize Throttled Response
   # =============================
-  self.throttled_response = lambda do |env|
-    retry_after = (env["rack.attack.match_data"] || {})[:period]
+  self.throttled_response = lambda do |request|
+    retry_after = (request.env["rack.attack.match_data"] || {})[:period]
 
     headers = {
       "Content-Type" => "application/json",
