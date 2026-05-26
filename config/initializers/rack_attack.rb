@@ -49,7 +49,7 @@ class Rack::Attack
 
   # Customize Throttled Response
   # =============================
-  self.throttled_response = lambda do |request|
+  self.throttled_responder = lambda do |request|
     retry_after = (request.env["rack.attack.match_data"] || {})[:period]
 
     headers = {
