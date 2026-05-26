@@ -1,12 +1,12 @@
 module Api
   module V1
     class CoursesController < ApplicationController
-      before_action :set_course, only: [ :show, :publish, :unpublish ]
+      include CourseUtils
+
+      before_action :set_course, only: [ :show ]
 
       # ToDo: Add a CoursePolicy
       # before_action -> { authorize @course }, only: [ :show, :publish, :unpublish ]
-
-      rescue_from ActiveRecord::RecordNotFound, with: :course_not_found
 
       def show
         recent_enrollments_cache_key = "courses/#{@course.id}/recent_enrollments/#{latest_enrollment_timestamp(@course)}"
@@ -37,40 +37,7 @@ module Api
         render json: response_json, status: :ok
       end
 
-      # ToDo: Move #publish and #unpublish to a Courses::PublicationsController
-      #       as #create and #destroy
-      def publish
-        if @course.publish!
-          render json: @course, status: :ok
-        else
-          render json: { errors: "Could not publish course" }, status: :unprocessable_content
-        end
-      end
-
-      def unpublish
-        if @course.unpublish!
-          render json: @course, status: :ok
-        else
-          render json: { errors: "Could not unpublish course" }, status: :unprocessable_content
-        end
-      end
-
-      # ToDo: Move #drafts to a Courses::DraftsController as #index
-      def drafts
-        @draft_courses = Course.drafts
-
-        render json: @draft_courses, status: :ok
-      end
-
       private
-
-      def set_course
-        @course = Course.find(params[:id])
-      end
-
-      def course_not_found
-        render json: { error: "Course not found" }, status: :not_found
-      end
 
       def latest_enrollment_timestamp(course)
         course.enrollments.maximum(:updated_at)&.utc&.to_fs(:usec) || "none"

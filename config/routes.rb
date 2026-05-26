@@ -37,16 +37,20 @@ Rails.application.routes.draw do
       end
 
       resources :courses, only: [ :index, :show, :create, :update, :destroy ] do
-        member do
-          post :publish
+        collection do
+          get :published, to: "courses/publications#index"
         end
 
         member do
-          post :unpublish
+          post :publish, to: "courses/publications#create"
+        end
+
+        member do
+          post :unpublish, to: "courses/publications#destroy"
         end
 
         collection do
-          get :drafts
+          get :drafts, to: "courses/drafts#index"
         end
 
         resources :enrollments, only: [ :index, :create ]
