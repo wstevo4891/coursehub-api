@@ -8,30 +8,17 @@ module Api
       # ToDo: Add a CoursePolicy
       # before_action -> { authorize @course }, only: [ :show, :publish, :unpublish ]
 
+      def index
+        results = CoursesApi.search_courses(search_params)
+        render json: results, status: :ok
+      end
+
       def show
-        recent_enrollments_cache_key = "courses/#{@course.id}/recent_enrollments/#{latest_enrollment_timestamp(@course)}"
+        serializer = CourseSerializer.new(@course)
 
         response_json = {
-          course: Rails.cache.fetch(@course.cache_key_with_version) do
-            puts "--- Cache Miss! Generating course fragment for Course##{@course.id} ---"
-
-            {
-              id: @course.id,
-              title: @course.title,
-              description: @course.description
-            }
-          end,
-          recent_enrollments: Rails.cache.fetch(recent_enrollments_cache_key, expires_in: 30.minutes) do
-            puts "--- Cache Miss! Generating recent enrollments fragment for Course##{@course.id} ---"
-
-            @course.enrollments.order(created_at: :desc).limit(5).map do |enrollment|
-              {
-                id: enrollment.id,
-                enrolled_at: enrollment.created_at,
-                user_name: enrollment.user.name
-              }
-            end
-          end
+          course: serializer.as_json_cached,
+          recent_enrollments: serializer.recent_enrollments_json_cached
         }
 
         render json: response_json, status: :ok
@@ -39,8 +26,11 @@ module Api
 
       private
 
-      def latest_enrollment_timestamp(course)
-        course.enrollments.maximum(:updated_at)&.utc&.to_fs(:usec) || "none"
+      def search_params
+        {
+          pagination: params.permit(:page, :per_page),
+          query: params.permit(:status, :recent, :enrollments, :sort)
+        }
       end
     end
   end
