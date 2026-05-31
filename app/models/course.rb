@@ -2,6 +2,8 @@ class Course < ApplicationRecord
   # === Attributes =========================================
   enum :status, %w[draft published]
 
+  has_many_attached :documents
+
   # === Associations =======================================
   has_many :enrollments
   has_many :users, through: :enrollments
