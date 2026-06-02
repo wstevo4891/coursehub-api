@@ -6,7 +6,7 @@ module Api
       before_action :set_course, only: [ :show ]
 
       # ToDo: Add a CoursePolicy
-      # before_action -> { authorize @course }, only: [ :show, :publish, :unpublish ]
+      # before_action -> { authorize @course }, only: [ :show, :update ]
 
       def index
         results = CoursesApi.search_courses(search_params)
@@ -24,12 +24,64 @@ module Api
         render json: response_json, status: :ok
       end
 
+      def create
+        # authorize Course
+        @course = Course.new(course_params_without_attachment)
+
+        attach_video_blob
+
+        if @course.save
+          render json: course_json, status: :created
+        else
+          render json: error_json, status: :unprocessable_entity
+        end
+      end
+
+      def update
+        if @course.update(course_params_without_attachment)
+
+          attach_video_blob
+
+          render json: course_json, status: :ok
+        else
+          render json: error_json, status: :unprocessable_entity
+        end
+      end
+
       private
 
       def search_params
         {
           pagination: params.permit(:page, :per_page),
           query: params.permit(:status, :recent, :enrollments, :sort)
+        }
+      end
+
+      def course_params_without_attachment
+        params.require(:course).permit(:title, :description)
+      end
+
+      def attach_video_blob
+        return unless params.dig(:course, :video_blob_signed_id).present?
+
+        @course.video.attach(params[:course][:video_blob_signed_id])
+      rescue Active::Support::MessageVerifier::InvalidSignature
+        @course.errors.add(:video, "attachment signature is invalid")
+      end
+
+      def course_json
+        {
+          course: @course,
+          location: api_v1_course_url(@course)
+        }
+      end
+
+      def error_json
+        {
+          error: {
+            code: "invalid_parameters",
+            message: "Invalid parameters for course."
+          }
         }
       end
     end
