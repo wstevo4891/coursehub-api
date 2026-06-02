@@ -5,13 +5,14 @@ module Api
 
       before_action :set_user, only: [ :show, :update, :destroy ]
 
+      before_action -> { authorize @user }, only: [ :show, :update, :destroy ]
+
       def index
         @users = policy_scope(User)
         render json: @users, status: :ok
       end
 
       def show
-        authorize @user
         render json: @user, status: :ok
       end
 
@@ -28,8 +29,6 @@ module Api
       end
 
       def update
-        authorize @user
-
         if @user.update(user_params)
           render json: @user, status: :ok
         else
@@ -38,7 +37,6 @@ module Api
       end
 
       def destroy
-        authorize @user
         @user.destroy
         head :no_content
       end
@@ -48,7 +46,12 @@ module Api
       def set_user
         @user = User.find(params[:id])
       rescue ActiveRecord::RecordNotFound
-        render json: { error: "User not found" }, status: :not_found
+        render json: {
+          error: {
+            code: "user_not_found",
+            message: "User not found for ID: #{params[:id]}"
+          }
+        }, status: :not_found
       end
 
       def user_params
