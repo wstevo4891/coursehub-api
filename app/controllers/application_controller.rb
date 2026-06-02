@@ -37,7 +37,10 @@ class ApplicationController < ActionController::API
 
   def user_not_authorized
     render json: {
-      error: "You are not authorized to perform this action."
+      error: {
+        code: "not_authorized",
+        message: "You are not authorized to perform this action."
+      }
     }, status: :forbidden
   end
 end
