@@ -3,10 +3,9 @@ module Api
     class CoursesController < ApplicationController
       include CourseUtils
 
-      before_action :set_course, only: [ :show ]
+      before_action :set_course, only: [ :show, :update, :destroy ]
 
-      # ToDo: Add a CoursePolicy
-      # before_action -> { authorize @course }, only: [ :show, :update ]
+      before_action -> { authorize @course }, only: [ :show, :update, :destroy ]
 
       def index
         results = CoursesApi.search_courses(search_params)
@@ -25,7 +24,7 @@ module Api
       end
 
       def create
-        # authorize Course
+        authorize Course
         @course = Course.new(course_params_without_attachment)
 
         attach_video_blob
@@ -46,6 +45,11 @@ module Api
         else
           render json: error_json, status: :unprocessable_entity
         end
+      end
+
+      def destroy
+        @course.destroy
+        head :no_content
       end
 
       private
