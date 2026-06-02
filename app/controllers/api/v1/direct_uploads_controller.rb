@@ -9,12 +9,25 @@ module Api
                   with: :handle_invalid_signature
 
       def create
-        json_response = BlobSerializer.call(blob_params, @current_user.id)
+        blob = create_blob
+
+        json_response = BlobSerializer.call(blob)
 
         render json: json_response, status: :ok
       end
 
       private
+
+      # Use ActiveStorage::Blob#create_before_direct_upload!
+      # This requires file metadata: filename, bute_size, checksum, content_type
+      def create_blob
+        ActiveStorage::Blob.create_before_direct_upload!(
+          **blob_params,
+          metadata: {
+            user_id: @curent_user.id
+          }
+        )
+      end
 
       def blob_params
         params.require(:blob).permit(:filename, :byte_size, :checksum, :content_type)

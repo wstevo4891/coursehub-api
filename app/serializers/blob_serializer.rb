@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 class BlobSerializer
-  def self.call(params, user_id)
-    new(params, user_id).as_json
+  def self.call(blob)
+    new(blob).as_json
   end
 
-  def initialize(params, user_id)
-    @blob = build_active_storage_blob(params, user_id)
+  def initialize(blob)
+    @blob = blob
   end
 
   def as_json
@@ -31,15 +31,4 @@ class BlobSerializer
   private
 
   attr_reader :blob
-
-  # Use ActiveStorage::Blob#create_before_direct_upload!
-  # This requires file metadata: filename, bute_size, checksum, content_type
-  def build_active_storage_blob(params, user_id)
-    ActiveStorage::Blob.create_before_direct_upload!(
-      **params,
-      metadata: {
-        user_id: user_id
-      }
-    )
-  end
 end
