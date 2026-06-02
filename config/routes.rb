@@ -26,11 +26,13 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
+      get "/health", to: "health#index"
+
       post "/login", to: "sessions#create"
 
       post "/refresh", to: "refresh#create"
 
-      get "/health", to: "health#index"
+      post "/direct-uploads", to: "direct_uploads#create"
 
       resources :users, only: [ :index, :show, :create, :update, :destroy ] do
         resource :settings, controller: "user_settings", only: [ :show, :update ]
