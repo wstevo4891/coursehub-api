@@ -2,6 +2,8 @@ class Course < ApplicationRecord
   # === Attributes =========================================
   enum :status, %w[draft published]
 
+  has_one_attached :video
+
   has_many_attached :documents
 
   # === Associations =======================================
