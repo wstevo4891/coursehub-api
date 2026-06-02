@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class TokenSerializer
-  def call(user, tokenizer = JsonWebToken)
+  def self.call(user, tokenizer = JsonWebToken)
     new(user, tokenizer).as_json
   end
 
