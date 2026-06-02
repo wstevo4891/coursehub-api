@@ -19,7 +19,7 @@ class CourseSerializer
 
   def as_json_cached
     Rails.cache.fetch(course.cache_key_with_version) do
-      puts "--- Cache Miss! Generating course fragment for Course##{course.id} ---"
+      Rails.logger.info "--- Cache Miss! Generating course fragment for Course##{course.id} ---"
       as_json
     end
   end
@@ -36,7 +36,7 @@ class CourseSerializer
 
   def recent_enrollments_json_cached
     Rails.cache.fetch(recent_enrollments_cache_key, expires_in: 30.minutes) do
-      puts "--- Cache Miss! Generating recent enrollments fragment for Course##{@course.id} ---"
+      Rails.logger.info "--- Cache Miss! Generating recent enrollments fragment for Course##{@course.id} ---"
       recent_enrollments_json
     end
   end

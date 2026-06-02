@@ -8,8 +8,8 @@ module Api
       before_action -> { authorize @course }, only: [ :show, :update, :destroy ]
 
       def index
-        results = CoursesApi.search_courses(search_params)
-        render json: results, status: :ok
+        response_json = CoursesApi.search_courses(search_params)
+        render json: response_json, status: :ok
       end
 
       def show
@@ -75,7 +75,7 @@ module Api
 
       def course_json
         {
-          course: @course,
+          course: CourseSerializer.call(@course),
           location: api_v1_course_url(@course)
         }
       end
