@@ -32,6 +32,12 @@ Rails.application.configure do
   # Store uploaded files on the local file system (see config/storage.yml for options).
   # config.active_storage.service = :local
 
+  # Set default host to the API domain
+  routes.default_url_options[:host] = ENV.fetch("APPLICATION_HOST", "api.coursehub.com")
+
+  # Set default protocol to HTTPS
+  routes.default_url_options[:protocol] = "https"
+
   # Store uploaded files on Amazon Web Services S3
   config.active_storage.service = :amazon
 
