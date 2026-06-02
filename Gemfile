@@ -65,6 +65,9 @@ gem "secure_headers"
 # Use AWS S3 for file storage
 gem "aws-sdk-s3", require: false
 
+# High-level interface for making HTTP requests
+gem "httparty"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ]
