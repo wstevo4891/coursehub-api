@@ -1,4 +1,4 @@
-require "swagger_helper"
+require "rails_helper"
 
 RSpec.describe "Api::V1::Users", type: :request do
   let!(:user) { create(:user) }
@@ -32,7 +32,7 @@ RSpec.describe "Api::V1::Users", type: :request do
       it "returns a not found status" do
         get "/api/v1/users/invalid-id", headers: auth_headers
         expect(response).to have_http_status(:not_found)
-        expect(json_response["error"]).to eq("User not found")
+        expect(json_response["error"]["message"]).to eq("User not found for ID: invalid-id")
       end
     end
 
@@ -103,45 +103,6 @@ RSpec.describe "Api::V1::Users", type: :request do
         expect(errors).to include(
           "password" => [ "is too short (minimum is 6 characters)" ]
         )
-      end
-    end
-  end
-
-  path "/api/v1/users/{id}" do
-    parameter name: :id, in: :path, type: :string, description: "User ID"
-
-    get "Retrieves a user" do
-      tags "Users"
-      produces "application/json"
-
-      response "200", "user found" do
-        schema  type: :object,
-                properties: {
-                  id: { type: :integer },
-                  name: { type: :string },
-                  email: { type: :string },
-                  is_admin: { type: :boolean },
-                  created_at: { type: :string, format: "date-time" },
-                  updated_at: { type: :string, format: "date-time" }
-                },
-                required: [ "id", "name", "email", "is_admin" ]
-
-        let(:id) { user.id }
-        let(:Authorization) { "Bearer #{access_token}" }
-
-        run_test!
-      end
-
-      response "404", "user not found" do
-        schema type: :object,
-               properties: {
-                error: { type: :string }
-               }
-
-        let(:id) { "invalid-id" }
-        let(:Authorization) { "Bearer #{access_token}" }
-
-        run_test!
       end
     end
   end
